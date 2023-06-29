@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'package:pomodoro/store/pomodoro.store.dart';
 import 'package:pomodoro/pages/Pomodoro.dart';
 
 void main() {
@@ -10,12 +13,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return MultiProvider(
+      providers: [
+        Provider<PomodoroStore>(create: (ctx) => PomodoroStore()),
+      ],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: Pomodoro(),
       ),
-      home: Pomodoro(),
     );
   }
 }

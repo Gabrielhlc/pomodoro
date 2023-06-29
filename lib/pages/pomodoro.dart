@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+
+import 'package:pomodoro/store/pomodoro.store.dart';
+
 import 'package:pomodoro/components/cronometro.dart';
 import 'package:pomodoro/components/entrada_tempo.dart';
 
@@ -7,29 +12,36 @@ class Pomodoro extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    final store = Provider.of<PomodoroStore>(context);
+
+    return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Expanded(
+          const Expanded(
             child: Cronometro(),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(vertical: 40),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                EntradaTempo(
-                  value: 25,
-                  title: 'Trabalho',
+              padding: const EdgeInsets.symmetric(vertical: 40),
+              child: Observer(
+                builder: (_) => Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    EntradaTempo(
+                      value: store.tempoTrabalho,
+                      title: 'Trabalho',
+                      inc: store.incrementarTempoTrabalho,
+                      dec: store.decrementarTempoTrabalho,
+                    ),
+                    EntradaTempo(
+                      value: store.tempoDescanso,
+                      title: 'Descanso',
+                      inc: store.incrementarTempoDescanso,
+                      dec: store.decrementarTempoDescanso,
+                    ),
+                  ],
                 ),
-                EntradaTempo(
-                  value: 5,
-                  title: 'Descanso',
-                ),
-              ],
-            ),
-          ),
+              )),
         ],
       ),
     );
